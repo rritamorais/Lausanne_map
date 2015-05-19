@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lausanne Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+
+  <div id="nav">
+      <h2>Favorite places in Lausanne</h2>
+      <ul id="list" data-bind="foreach: locationList">
+        <li data-bind="text: name, click: $parent.changeLoc"></li>
+      </ul>  
+    <div data-bind="with: currentLocation">
+        <h3 data-bind="text: name"></h3>
+      <ul id="list" data-bind="foreach: wikiLinks">
+        <a data-bind="attr: { href: $data, title: $data}, text: $data"></a>
+      </ul>          
+
+    </div>
+  </div>
+            <div id="map-canvas"></div>
+    <script src="js/lib/knockout-3.2.0.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

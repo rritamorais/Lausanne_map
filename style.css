@@ -1,0 +1,20 @@
+html, body, #map-canvas {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+#nav {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	padding: 20px;
+	z-index: 1;
+	background-color: white;
+	width: 300px;
+}
+#list {
+	list-style-type: none;
+	padding-left: 0;
+}
+

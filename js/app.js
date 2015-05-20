@@ -3,7 +3,7 @@ var $wikiElem = $('#wikipedia-links');
 
 var initialLocations = [
   {
-      name : 'Parc de Mon Repos',
+      name : 'Le Parc de Mon Repos',
       lat : 46.518889,
       lng : 6.642778,
       description: 'The Parc de Mon Repos is a public park of the city of Lausanne, Switzerland.',
@@ -47,12 +47,15 @@ var initialLocations = [
 
 var ViewModel = function() {
   var self = this;
+  this.filter = ko.observable('');
+
   //variable 
   var Location = function(data) {
     this.name = data.name;
     this.lat = data.lat;
     this.lng = data.lng;
     this.wikiLinks = ko.observableArray([]);
+
     // this.marker = ko.observable
 
   }
@@ -69,8 +72,9 @@ var ViewModel = function() {
   //Selection of locations
   this.changeLoc = function(clickedLoc){
     self.currentLocation(clickedLoc);
-
     loadWiki();
+          console.log(ViewModel.filteredItems());
+
   };
 
   //creates map
@@ -87,10 +91,11 @@ var ViewModel = function() {
     //creates markers
     ko.utils.arrayForEach(self.locationList(), function(locItem){
       var myLatlng = new google.maps.LatLng(locItem.lat,locItem.lng);
-
+      var image = 'img/marker.png';
       var marker = new google.maps.Marker({
         position: myLatlng,
         map: map,
+        icon: image,
         animation: google.maps.Animation.DROP,
         title: locItem.name
       });
@@ -125,7 +130,6 @@ function loadWiki() {
     url: wikiUrl ,
     dataType: 'jsonp',
     success: function(response){
-      console.log(response);
       var articleList = response[1];
 
       self.currentLocation().wikiLinks([]);
@@ -143,12 +147,30 @@ function loadWiki() {
 
     return false;
 
-  }
-loadWiki();
+  };
 
+  //Search
+ViewModel.filteredItems = ko.computed(function() {
+      console.log(self.filter());
+    var filter = self.filter().toLowerCase();
+    if (!filter) {
+        return self.locationList();
+    } else {
+        return ko.utils.arrayFilter(self.locationList(), function(item) {
+            return stringStartsWith(item.name.toLowerCase(), filter);
+        });
+    }
+}, ViewModel);
 
 
 };// <-- end of ViewModel
+
+var stringStartsWith = function (string, startsWith) {          
+        string = string || "";
+        if (startsWith.length > string.length)
+            return false;
+        return string.substring(0, startsWith.length) === startsWith;
+    };
 
 
 

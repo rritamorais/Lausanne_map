@@ -3,7 +3,7 @@ var $wikiElem = $('#wikipedia-links');
 
 var initialLocations = [
   {
-      name : 'Le Parc de Mon Repos',
+      name : 'Parc de Mon Repos',
       lat : 46.518889,
       lng : 6.642778,
       description: 'The Parc de Mon Repos is a public park of the city of Lausanne, Switzerland.',
@@ -148,6 +148,7 @@ function loadWiki() {
     return false;
 
   };
+  loadWiki();
 
   //Search
 ViewModel.filteredItems = ko.computed(function() {

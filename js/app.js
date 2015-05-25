@@ -73,15 +73,10 @@ var ViewModel = function() {
   this.changeLoc = function(clickedLoc){
     self.currentLocation(clickedLoc);
     loadWiki();
-    toggleBounce(clickedLoc.marker);
-    console.log(clickedLoc.marker);
-    // self.locationList()[???].marker;
-
   };
 
   //FILTER
   ViewModel.filteredItems = ko.computed(function() {
-        console.log(self.filter());
       var filter = self.filter().toLowerCase();
       if (!filter) {
         //Hides any info windows while searching
@@ -91,9 +86,9 @@ var ViewModel = function() {
       } else {
           return ko.utils.arrayFilter(self.locationList(), function(item) {
             //Hides any info windows while searching
+
             self.currentLocation(null);
             return stringStartsWith(item.name.toLowerCase(), filter);
-
           });
       }
   }, ViewModel);
@@ -124,15 +119,16 @@ function initialize() {
       title: locItem.name
     });
 
+    // google.maps.event.addListener(marker, 'click', toggleBounce);
     markerList.push(marker);
-
+    //push the right marker to the location list
+    self.locationList()[markerList.length -1].marker = marker;
 
     google.maps.event.addListener(marker,'click', (function(markerCopy) {
       return function() {
         self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
         loadWiki();
-        toggleBounce(markerCopy);
-
+        self.toggleBounce(markerCopy);
       };
     })(marker));
   });  
@@ -140,18 +136,19 @@ function initialize() {
 
 
 
-  function toggleBounce(clickMarker) {
-    markerList.forEach(function(item) { 
-      item.setAnimation(null);        
-    });
+
+    this.toggleBounce = function(clickMarker) {
+      markerList.forEach(function(item) { 
+        item.setAnimation(null);        
+      });
 
 
-    if (clickMarker.getAnimation() != null) {
-      clickMarker.setAnimation(null);
-    } else {
-      clickMarker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-  };
+      if (clickMarker.getAnimation() != null) {
+        clickMarker.setAnimation(null);
+      } else {
+        clickMarker.setAnimation(google.maps.Animation.BOUNCE);
+      }
+    };
 
 
 

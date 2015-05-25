@@ -17,7 +17,7 @@
       <div id="search">
         <form action="javascript:void(0);" method="GET">
           <fieldset class="clearfix">
-            <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="search" name="search" value="What are you looking for?" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> <!-- JS because of IE support; better: placeholder="What are you looking for?" -->
+            <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="search" name="search" value="What are you looking for?" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
             <input type="submit" value="Search" class="button">
           </fieldset>
         </form>
@@ -26,7 +26,7 @@
       </div>
       <div>
       <ul id="list" data-bind="foreach: ViewModel.filteredItems">
-        <li data-bind="text: name, click: $parent.changeLoc"></li>
+        <li data-bind="text: name, click: function() { $parent.changeLoc($data); $parent.toggleBounce($data.marker); }"></li>
       </ul>  
     </div>
   </div>

@@ -7,7 +7,6 @@ var initialLocations = [
       lat : 46.518889,
       lng : 6.642778,
       description: 'The Parc de Mon Repos is a public park of the city of Lausanne, Switzerland.',
-      wikiLinks: {}
 
   },
   {
@@ -15,7 +14,6 @@ var initialLocations = [
       lat : 46.5239,
       lng : 6.6341,
       description: 'The Cantonal Museum of Fine Arts is an art museum in Lausanne, Switzerland',
-      wikiLinks: {}
 
 
   },
@@ -24,14 +22,12 @@ var initialLocations = [
       lat : 46.5140495,
       lng : 6.623333,
       description: 'Le Flon is a district of the city of Lausanne, in Switzerland. It is served by Lausanne Metro lines 1 and 2 from Lausanne-Flon station.',
-      wikiLinks: {}
   },
   {
       name : 'The Olympic Museum',
       lat : 46.508611,
       lng : 6.633889,
       description: 'The Olympic Museum in Lausanne, Switzerland houses permanent and temporary exhibits relating to sport and the Olympic movement. With more than 10,000 pieces, the museum is the largest archive of Olympic Games in the world; and one of Lausannes prime tourist site draws; attracting more than 250,000 visitors each year.',
-      wikiLinks: {}
 
   },
   {
@@ -39,7 +35,6 @@ var initialLocations = [
       lat : 46.518333,
       lng: 6.568056,
       description: 'The Rolex Learning Center is the campus hub and library for the École polytechnique fédérale de Lausanne, in Lausanne, Switzerland. Designed by the architects SANAA, it opened on February 22nd, 2010.',
-      wikiLinks: {}
 
   }
 ]
@@ -79,17 +74,21 @@ var ViewModel = function() {
   ViewModel.filteredItems = ko.computed(function() {
       var filter = self.filter().toLowerCase();
       if (!filter) {
-        //Hides any info windows while searching
-        self.currentLocation(null);
+        
+        setMarkers(self.locationList());
         return self.locationList();
 
       } else {
-          return ko.utils.arrayFilter(self.locationList(), function(item) {
-            //Hides any info windows while searching
+          //Hides any info windows while searching
+          self.currentLocation(null);
 
-            self.currentLocation(null);
+          clearMarkers();
+
+          var innerList = ko.utils.arrayFilter(self.locationList(), function(item) {
             return stringStartsWith(item.name.toLowerCase(), filter);
           });
+          setMarkers(innerList);
+          return innerList;
       }
   }, ViewModel);
 
@@ -108,6 +107,7 @@ function initialize() {
   };
 
   //creates markers
+  function createMarkers() {
   ko.utils.arrayForEach(ViewModel.filteredItems(), function(locItem){
     var myLatlng = new google.maps.LatLng(locItem.lat,locItem.lng);
     var image = 'img/marker.png';
@@ -119,12 +119,11 @@ function initialize() {
       title: locItem.name
     });
 
-    // google.maps.event.addListener(marker, 'click', toggleBounce);
     markerList.push(marker);
     //push the right marker to the location list
     self.locationList()[markerList.length -1].marker = marker;
 
-    google.maps.event.addListener(marker,'click', (function(markerCopy) {
+    google.maps.event.addListener(marker, 'click', (function(markerCopy) {
       return function() {
         self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
         loadWiki();
@@ -132,7 +131,21 @@ function initialize() {
       };
     })(marker));
   });  
+};
+createMarkers();
 
+
+  function clearMarkers() {
+    markerList.forEach(function(item) { 
+      item.setMap(null);
+    });
+  };
+
+  function setMarkers(listLoc) {
+    listLoc.forEach(function(item) { 
+      item.marker.setMap(map);
+    });
+  };
 
 
 

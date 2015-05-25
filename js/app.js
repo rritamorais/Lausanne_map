@@ -55,8 +55,7 @@ var ViewModel = function() {
     this.lat = data.lat;
     this.lng = data.lng;
     this.wikiLinks = ko.observableArray([]);
-
-    // this.marker = ko.observable
+    this.marker = new google.maps.Marker();
 
   }
 
@@ -67,51 +66,95 @@ var ViewModel = function() {
     self.locationList.push( new Location(locItem));
   });
 
-  this.currentLocation = ko.observable(this.locationList()[0]);
+  //initialize the currentLocation to none so nothing is displayed
+  this.currentLocation = ko.observable(this.locationList()[null]);
 
   //Selection of locations
   this.changeLoc = function(clickedLoc){
     self.currentLocation(clickedLoc);
     loadWiki();
-          console.log(ViewModel.filteredItems());
+    toggleBounce(clickedLoc.marker);
+    console.log(clickedLoc.marker);
+    // self.locationList()[???].marker;
 
   };
 
+  //FILTER
+  ViewModel.filteredItems = ko.computed(function() {
+        console.log(self.filter());
+      var filter = self.filter().toLowerCase();
+      if (!filter) {
+        //Hides any info windows while searching
+        self.currentLocation(null);
+        return self.locationList();
+
+      } else {
+          return ko.utils.arrayFilter(self.locationList(), function(item) {
+            //Hides any info windows while searching
+            self.currentLocation(null);
+            return stringStartsWith(item.name.toLowerCase(), filter);
+
+          });
+      }
+  }, ViewModel);
+
+
   //creates map
-  var map;
-  function initialize() {
+  var map = initialize();
+  var markerList = [];
+
+function initialize() {
     var mapOptions = {
       center: new google.maps.LatLng(46.5140491, 6.623334),
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.SATELLITE
     };
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    map.setTilt(45);
+    return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  };
 
-    //creates markers
-    ko.utils.arrayForEach(self.locationList(), function(locItem){
-      var myLatlng = new google.maps.LatLng(locItem.lat,locItem.lng);
-      var image = 'img/marker.png';
-      var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        icon: image,
-        animation: google.maps.Animation.DROP,
-        title: locItem.name
-      });
-      google.maps.event.addListener(marker, 'click', toggleBounce);
+  //creates markers
+  ko.utils.arrayForEach(ViewModel.filteredItems(), function(locItem){
+    var myLatlng = new google.maps.LatLng(locItem.lat,locItem.lng);
+    var image = 'img/marker.png';
+    marker = new google.maps.Marker({
+      position: myLatlng,
+      icon: image,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: locItem.name
+    });
 
-      function toggleBounce() {
+    markerList.push(marker);
 
-        if (marker.getAnimation() != null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-      }
-  });    
-  }
-  google.maps.event.addDomListener(window, 'load', initialize);
+
+    google.maps.event.addListener(marker,'click', (function(markerCopy) {
+      return function() {
+        self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
+        loadWiki();
+        toggleBounce(markerCopy);
+
+      };
+    })(marker));
+  });  
+
+
+
+
+  function toggleBounce(clickMarker) {
+    markerList.forEach(function(item) { 
+      item.setAnimation(null);        
+    });
+
+
+    if (clickMarker.getAnimation() != null) {
+      clickMarker.setAnimation(null);
+    } else {
+      clickMarker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  };
+
+
+
   // <-- end of map
 
 //WIKI
@@ -148,20 +191,6 @@ function loadWiki() {
     return false;
 
   };
-  loadWiki();
-
-  //Search
-ViewModel.filteredItems = ko.computed(function() {
-      console.log(self.filter());
-    var filter = self.filter().toLowerCase();
-    if (!filter) {
-        return self.locationList();
-    } else {
-        return ko.utils.arrayFilter(self.locationList(), function(item) {
-            return stringStartsWith(item.name.toLowerCase(), filter);
-        });
-    }
-}, ViewModel);
 
 
 };// <-- end of ViewModel

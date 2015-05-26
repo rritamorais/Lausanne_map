@@ -49,6 +49,7 @@ var ViewModel = function() {
     this.name = data.name;
     this.lat = data.lat;
     this.lng = data.lng;
+    this.description = data.description;
     this.wikiLinks = ko.observableArray([]);
     this.marker = new google.maps.Marker();
 

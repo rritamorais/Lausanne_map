@@ -20,6 +20,9 @@ html, body, #map-canvas {
   top: 400px;
   left: 20px;
 }
+#info p, h4 {
+  padding: 0px 20px;
+}
 #info h3 {
   color: #1bba9a;
   padding-left: 20px;

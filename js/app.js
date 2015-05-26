@@ -7,6 +7,7 @@ var initialLocations = [
       lat : 46.518889,
       lng : 6.642778,
       description: 'The Parc de Mon Repos is a public park of the city of Lausanne, Switzerland.',
+      tags: ["restaurants", "bars"]
 
   },
   {
@@ -14,7 +15,7 @@ var initialLocations = [
       lat : 46.5239,
       lng : 6.6341,
       description: 'The Cantonal Museum of Fine Arts is an art museum in Lausanne, Switzerland',
-
+      tags: ["restaurants", "bars"]
 
   },
   {
@@ -22,20 +23,21 @@ var initialLocations = [
       lat : 46.5140495,
       lng : 6.623333,
       description: 'Le Flon is a district of the city of Lausanne, in Switzerland. It is served by Lausanne Metro lines 1 and 2 from Lausanne-Flon station.',
+      tags: ["parks"]
   },
   {
       name : 'The Olympic Museum',
       lat : 46.508611,
       lng : 6.633889,
       description: 'The Olympic Museum in Lausanne, Switzerland houses permanent and temporary exhibits relating to sport and the Olympic movement. With more than 10,000 pieces, the museum is the largest archive of Olympic Games in the world; and one of Lausannes prime tourist site draws; attracting more than 250,000 visitors each year.',
-
+      tags: ["restaurants", "bars"]
   },
   {
       name : 'Rolex Learning Center',
       lat : 46.518333,
       lng: 6.568056,
       description: 'The Rolex Learning Center is the campus hub and library for the École polytechnique fédérale de Lausanne, in Lausanne, Switzerland. Designed by the architects SANAA, it opened on February 22nd, 2010.',
-
+      tags: ["restaurants", "bars"]
   }
 ]
 
@@ -49,6 +51,7 @@ var ViewModel = function() {
     this.name = data.name;
     this.lat = data.lat;
     this.lng = data.lng;
+    this.tags = data.tags;
     this.description = data.description;
     this.wikiLinks = ko.observableArray([]);
     this.marker = new google.maps.Marker();
@@ -80,19 +83,30 @@ var ViewModel = function() {
         return self.locationList();
 
       } else {
-          //Hides any info windows while searching
+          //hides any info windows while searching
           self.currentLocation(null);
-
+          //clears map
           clearMarkers();
-
+          //creates temporary variable 
           var innerList = ko.utils.arrayFilter(self.locationList(), function(item) {
-            return stringStartsWith(item.name.toLowerCase(), filter);
+            return (stringStartsWith(item.name.toLowerCase(), filter) || filterTags(item.tags, filter))
           });
+          //uses temporary variable to set markers on the map while filtering
           setMarkers(innerList);
           return innerList;
       }
   }, ViewModel);
 
+  //filters tags
+  function filterTags(tagList, tagFilter) {
+    for (i=0; i < tagList.length; i++) {
+      //no need to address the (!filter) as it is only used inside the main filter function
+      if (stringStartsWith(tagList[i].toLowerCase(), tagFilter)) {
+        return true;
+      }
+    }
+    return false;
+};
 
   //creates map
   var map = initialize();

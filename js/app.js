@@ -149,7 +149,14 @@ var ViewModel = function() {
   this.changeLoc = function(clickedLoc){
     self.currentLocation(clickedLoc);
     loadWiki();
+    scrollDown();
   };
+
+  //Scrolls nav down to info div
+  function scrollDown() {
+    var infoDiv = document.getElementById("nav");
+    infoDiv.scrollTop = infoDiv.scrollHeight;
+  }
 
   //FILTER
   ViewModel.filteredItems = ko.computed(function() {
@@ -219,6 +226,8 @@ function initialize() {
       return function() {
         self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
         loadWiki();
+        scrollDown();
+
         self.toggleBounce(markerCopy);
       };
     })(marker));
@@ -256,8 +265,6 @@ createMarkers();
     };
 
 
-
-  // <-- end of map
 
 //WIKI
 function loadWiki() {

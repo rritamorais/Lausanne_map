@@ -33,8 +33,10 @@
         <h3 data-bind="text: name"></h3>
         <p data-bind="text: description"></p>
         <h4>Want more information?</h4>
-      <ul id="list" data-bind="foreach: wikiLinks">
+      <ul id="wiki" data-bind="foreach: wikiLinks">
+        <li>
         <a data-bind="attr: { href: $data, title: $data}, text: $data"></a>
+      </li>
       </ul>
     </div>
     </div>

@@ -9,11 +9,9 @@
 
 </head>
 <body>
-
-  <div id="nav">
-      <div id="top">
-        <h2>Hip places in Lausanne</h2>
-    <div class="container">
+  <div id="header-fixed">
+    <h2>Hip places in Lausanne</h2>
+  <div class="container">
       <div id="search">
         <form action="javascript:void(0);" method="GET">
           <fieldset class="clearfix">
@@ -23,20 +21,22 @@
         </form>
       </div>
     </div> 
-      </div>
+  </div>
+  <div id="nav">
       <div>
       <ul id="list" data-bind="foreach: ViewModel.filteredItems">
         <li data-bind="text: name, click: function() { $parent.changeLoc($data); $parent.toggleBounce($data.marker); }"></li>
       </ul>  
     </div>
-  </div>
+  
       <div id="info" data-bind="with: currentLocation">
         <h3 data-bind="text: name"></h3>
         <p data-bind="text: description"></p>
-        <h4>More information:</h4>
+        <h4>Want more information?</h4>
       <ul id="list" data-bind="foreach: wikiLinks">
         <a data-bind="attr: { href: $data, title: $data}, text: $data"></a>
       </ul>
+    </div>
     </div>
 
 

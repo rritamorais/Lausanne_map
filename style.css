@@ -2,39 +2,48 @@ html, body, #map-canvas {
   height: 100%;
   margin: 0px;
   padding: 0px;
+  font-family: Helvetica;
 }
 
 #nav, #info {
-	position: absolute;
 	z-index: 1;
 	width: 400px;
-  font-family: Helvetica;
+  overflow: scroll;
 }
 #nav {
+  position: absolute;
+  padding-top: 90px;
   background-color: rgba(256, 256, 256, 0.2);;
   top: 30px;
   left: 20px;
+  max-height: 600px;
 }
 #info {
   background-color: white;
-  top: 400px;
-  left: 20px;
+  max-height: 300px;
+  margin-left: 20px;
+  width: 360px;
+  margin-bottom: 20px;
 }
-#info p, h4 {
+#info p, h4, ul {
   padding: 0px 20px;
 }
 #info h3 {
   color: #1bba9a;
   padding-left: 20px;
 }
-#top {
-  height: 90px;
+#header-fixed {
+  position: absolute;
+  z-index: 2;
   background-color: white;
-  margin-top: -30px;
+  width: 400px;
+  height: 90px;
+  top: 30px;
+  left: 20px;
   color: #1bba9a;
 }
-#top h2 {
-  padding-top: 20px;
+#header-fixed h2 {
+  padding-top: -20px;
   text-align: center;
   font-size: 30px;
 }
@@ -46,7 +55,6 @@ html, body, #map-canvas {
 #list li {
   padding: 10px 10px;
   margin-top: 5px;
-  margin-right: 20px;
   background-color: #ebebeb;
   letter-spacing: 1px;
 }
@@ -94,6 +102,7 @@ input[type="search"]::-webkit-search-decoration {
 .clearfix:after { clear: both; }
 
 .container {
+  z-index: 1;
   height: 44px;
   left: 50%;
   margin: -22px 0 0 -141px;

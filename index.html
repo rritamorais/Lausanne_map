@@ -15,7 +15,7 @@
       <div id="search">
         <form action="javascript:void(0);" method="GET">
           <fieldset class="clearfix">
-            <input data-bind="value: filter, valueUpdate: 'afterkeydown', attr: { 'placeholder': 'Search by name or tag (museum, bar, gallery, etc...)' }" type="search" name="search" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
+            <input data-bind="value: filter, valueUpdate: 'afterkeydown', attr: { 'placeholder': 'Search zour awesome place by name or tag (museum, bar, gallery, etc...)' }" type="search" name="search" onBlur="if(this.value=='')this.value='Search zour awesome place by name or tag (museum, bar, gallery, etc...)'" onFocus="if(this.value=='Search zour awesome place by name or tag (museum, bar, gallery, etc...)')this.value='' "> 
             
           </fieldset>
         </form>
@@ -30,7 +30,8 @@
     </div>
   
       <div id="info" data-bind="with: currentLocation">
-        <h3 data-bind="text: name"></h3>
+        <h3 data-bind="text: name"></h3> 
+        <a id="directions" data-bind="attr: { href: 'https://maps.google.com?daddr=' + $data.lat + ',' + $data.lng}">Get directions</a>
         <ul id="four" data-bind="foreach: fourImgs">
           <img data-bind="attr: {src: $data}">
         </ul>

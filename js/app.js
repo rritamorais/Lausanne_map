@@ -15,7 +15,6 @@ var initialLocations = [
       lng : 6.619252,
       tags: ["concert", "art", "bar", "cafe", "gallery"]
   },
-
   {
       name : 'Parc de Mon Repos',
       lat : 46.518889,
@@ -32,7 +31,7 @@ var initialLocations = [
       name : 'Théâtre Vidy Lausanne',
       lat : 46.51275,
       lng : 6.611039,
-      tags: ["museum", "art", "culture", "gallery"]
+      tags: ["show", "art", "culture"]
   },
   {
       name : 'Le Flon',

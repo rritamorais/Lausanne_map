@@ -4,18 +4,35 @@ var $fourElem = $('#four');
 
 var initialLocations = [
   {
+      name : "Collection de l'art brut",
+      lat : 46.527314,
+      lng : 6.624636,
+      tags: ["museum", "art", "culture", "gallery"]
+  },
+  {
+      name : "Les Docs",
+      lat : 46.522407,
+      lng : 6.619252,
+      tags: ["concert", "art", "bar", "cafe", "gallery"]
+  },
+
+  {
       name : 'Parc de Mon Repos',
       lat : 46.518889,
       lng : 6.642778,
       tags: ["parks", "nature", "gardens"]
-
   },
   {
       name : 'Cantonal Museum of Fine Arts',
       lat : 46.5239,
       lng : 6.6341,
-      tags: ["museum", "art", "culture"]
-
+      tags: ["museum", "art", "culture", "gallery"]
+  },
+  {
+      name : 'Théâtre Vidy Lausanne',
+      lat : 46.51275,
+      lng : 6.611039,
+      tags: ["museum", "art", "culture", "gallery"]
   },
   {
       name : 'Le Flon',
@@ -24,15 +41,34 @@ var initialLocations = [
       tags: ["shopping", "bars", "clothes"]
   },
   {
+      name : "Le Zinema",
+      lat : 46.524054,
+      lng : 6.627342,
+      tags: ["cinema", "art", "culture"]
+  },
+  {
+      name : "Musée de l'Élysée",
+      lat : 46.5098,
+      lng : 6.63276,
+      tags: ["museum", "art", "culture", "gallery"]
+  },
+  {
+      name : "Béjart Ballet Lausanne",
+      lat : 46.53023,
+      lng : 6.622508,
+      tags: ["dance", "art", "culture", "ballet"]
+
+  },
+  {
       name : 'The Olympic Museum',
       lat : 46.508611,
       lng : 6.633889,
       tags: ["museum", "olympic", "culture"]
   },
   {
-      name : 'Rolex Learning Center',
-      lat : 46.518333,
-      lng: 6.568056,
+      name : 'La tour de Sauvabelin',
+      lat : 46.535246,
+      lng: 6.638557,
       tags: ["architecture", "lybrary", "culture"]
   }
 ]
@@ -65,12 +101,13 @@ var ViewModel = function() {
   //initialize the currentLocation to none so nothing is displayed
   this.currentLocation = ko.observable(this.locationList()[null]);
 
-  //Selection of locations
+  //Selects locations on click (list)
   this.changeLoc = function(clickedLoc){
     self.currentLocation(clickedLoc);
     loadWiki();
-    scrollDown();
     loadFoursquare();
+    //gives time for ajax request to finish before scrolling down the heigh of the div
+    setTimeout(scrollDown, 800);
   };
 
   //Scrolls nav down to info div
@@ -119,9 +156,10 @@ var ViewModel = function() {
 
   function initialize() {
     var mapOptions = {
-      center: new google.maps.LatLng(46.5140491, 6.623334),
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.SATELLITE
+      center: new google.maps.LatLng(46.5240491, 6.613334),
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.SATELLITE,
+      disableDefaultUI: true
     };
     return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     };
@@ -200,6 +238,10 @@ function loadWiki() {
     url: wikiUrl ,
     dataType: 'jsonp',
     success: function(response){
+      console.log(response);
+      if (response[1].length === 0) $( "#wikih4" ).text("No results found");
+      else $( "#wikih4" ).text("Want more information?");
+
       var articleList = response[1];
       var descriptionList = response[2];
       var description = descriptionList[0];
@@ -250,7 +292,7 @@ function loadWiki() {
         url: photoUrl ,
         dataType: 'jsonp',
         success: function(response){
-          var fourimgUrl = response.response.venue.bestPhoto.prefix + '320x200' + response.response.venue.bestPhoto.suffix;
+          var fourimgUrl = response.response.venue.bestPhoto.prefix + '420x200' + response.response.venue.bestPhoto.suffix;
           //clears array
           self.currentLocation().fourImgs([]);
           //pushes results into array

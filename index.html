@@ -10,13 +10,13 @@
 </head>
 <body>
   <div id="header-fixed">
-    <h2>Hip places in Lausanne</h2>
+    <h2 style="display: none">Hip places in Lausanne</h2>
   <div class="container">
       <div id="search">
         <form action="javascript:void(0);" method="GET">
           <fieldset class="clearfix">
-            <input data-bind="value: filter, valueUpdate: 'afterkeydown', attr: { 'placeholder': 'Search by name or tag (restaurant, museum)' }" type="search" name="search" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
-            <input type="submit" value="Search" class="button">
+            <input data-bind="value: filter, valueUpdate: 'afterkeydown', attr: { 'placeholder': 'Search by name or tag (museum, bar, gallery, etc...)' }" type="search" name="search" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
+            
           </fieldset>
         </form>
       </div>
@@ -25,7 +25,7 @@
   <div id="nav">
       <div>
       <ul id="list" data-bind="foreach: ViewModel.filteredItems">
-        <li data-bind="text: name, click: function() { $parent.changeLoc($data); $parent.toggleBounce($data.marker); }"></li>
+        <li data-bind="text: name, click: function() { $parent.changeLoc($data); $parent.toggleBounce($data.marker);}, "></li>
       </ul>  
     </div>
   
@@ -35,14 +35,17 @@
           <img data-bind="attr: {src: $data}">
         </ul>
         <p data-bind="text: description"></p>
-        <h4>Want more information?</h4>
-      <ul id="wiki" data-bind="foreach: wikiLinks">
-        <li>
-          <a data-bind="attr: { href: 'http://en.wikipedia.org/wiki/' + $data, title: $data}, text: $data"></a>
-        </li>
-      </ul>
-      <p style="font-size:10px; text-align:right;">Source: Wikipedia</p>
+        <h4 id="wikih4">Want more information?</h4>
+        <ul id="wiki" data-bind="foreach: wikiLinks">
+          <li>
+            <a data-bind="attr: { href: 'http://en.wikipedia.org/wiki/' + $data, title: $data}, text: $data"></a>
+          </li>
+        </ul>
+        <p style="font-size:10px; text-align:right;">Source: Wikipedia</p>
     </div>
+    </div>
+    <div id="signature">
+      <a href="http://www.rrrita.com/">Designed by Rita Morais</a>
     </div>
 
 

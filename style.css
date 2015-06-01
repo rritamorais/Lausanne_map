@@ -6,22 +6,23 @@ html, body, #map-canvas {
 }
 
 #nav, #info {
+  overflow: auto;
 	z-index: 1;
-	width: 400px;
-  overflow: scroll;
+	width: 500px;
 }
 #nav {
   position: absolute;
   max-height: 83%;
   padding-top: 90px;
-  background-color: rgba(256, 256, 256, 0.2);;
+  background-color: rgba(256, 256, 256, 0.5);
   top: 30px;
   left: 20px;
+  border-radius: 10px;
 }
 #info {
   background-color: white;
   margin-left: 20px;
-  width: 360px;
+  width: 460px;
   margin-bottom: 20px;
 }
 #info p, h4, ul {
@@ -31,20 +32,40 @@ html, body, #map-canvas {
   color: #1bba9a;
   padding-left: 20px;
 }
+::-webkit-scrollbar { 
+    display: none; 
+}
 #header-fixed {
   position: absolute;
   z-index: 2;
   background-color: white;
-  width: 400px;
+  background-image: url("img/header.png");
+  padding-left: 20px;
+  width: 480px;
   height: 90px;
   top: 30px;
   left: 20px;
-  color: #1bba9a;
+  color: white;
+  border-radius: 10px 10px 0px 0px;
 }
 #header-fixed h2 {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 30px;
+  margin-top: 20px;
+  font-size: 25px;
+}
+#signature {
+  position: absolute;
+  background-color: rgba(256, 256, 256, 0.2);  
+  color: white;
+  border-radius: 5px;
+  z-index: 2;
+  padding: 5px 10px;
+  left: 87%;
+  top: 5px;
+}
+#signature a {
+  text-decoration: none;
+  color: white;
+  font-size: 10px;
 }
 #wiki li {
   background-color: #1bba9a;
@@ -71,7 +92,7 @@ html, body, #map-canvas {
   background-color: #c4f0f2;
 }
 #list li:active {
-  background-color: blue;
+  background-color: grey;
 }
 
 /* ---------- SEARCH ---------- from: http://codepen.io/m412c0/pen/eDJui */
@@ -140,7 +161,7 @@ input[type="search"]::-webkit-search-decoration {
 #search input[type="search"] {
   background: #fff;
   color: #42454e;
-  min-width: 260px;
+  min-width: 430px;
   padding: 6px 8px;
 }
 

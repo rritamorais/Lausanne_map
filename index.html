@@ -9,34 +9,44 @@
 
 </head>
 <body>
-
-  <div id="nav">
-      <div id="top">
-        <h2>Hip places in Lausanne</h2>
-    <div class="container">
+  <div id="header-fixed">
+    <h2 style="display: none">Hip places in Lausanne</h2>
+  <div class="container">
       <div id="search">
         <form action="javascript:void(0);" method="GET">
           <fieldset class="clearfix">
-            <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="search" name="search" value="What are you looking for?" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
-            <input type="submit" value="Search" class="button">
+            <input data-bind="value: filter, valueUpdate: 'afterkeydown', attr: { 'placeholder': 'Search your awesome place by name or tag (museum, bar, gallery, etc...)' }" type="search" name="search" onBlur="if(this.value=='')this.value='Search your awesome place by name or tag (museum, bar, gallery, etc...)'" onFocus="if(this.value=='Search your awesome place by name or tag (museum, bar, gallery, etc...)')this.value='' "> 
+            
           </fieldset>
         </form>
       </div>
     </div> 
-      </div>
+  </div>
+  <div id="nav">
       <div>
       <ul id="list" data-bind="foreach: ViewModel.filteredItems">
-        <li data-bind="text: name, click: function() { $parent.changeLoc($data); $parent.toggleBounce($data.marker); }"></li>
+        <li data-bind="text: name, click: function() { $parent.changeLoc($data); $parent.toggleBounce($data.marker);}, "></li>
       </ul>  
     </div>
-  </div>
+  
       <div id="info" data-bind="with: currentLocation">
-        <h3 data-bind="text: name"></h3>
+        <h3 data-bind="text: name"></h3> 
+        <a id="directions" data-bind="attr: { href: 'https://maps.google.com?daddr=' + $data.lat + ',' + $data.lng}">Get directions</a>
+        <ul id="foursquare" data-bind="foreach: fourImgs">
+          <img data-bind="attr: {src: $data}">
+        </ul>
         <p data-bind="text: description"></p>
-        <h4>More information:</h4>
-      <ul id="list" data-bind="foreach: wikiLinks">
-        <a data-bind="attr: { href: $data, title: $data}, text: $data"></a>
-      </ul>
+        <h4 id="wikih4">Want more information?</h4>
+        <ul id="wiki" data-bind="foreach: wikiLinks">
+          <li>
+            <a data-bind="attr: { href: 'http://en.wikipedia.org/wiki/' + $data, title: $data}, text: $data"></a>
+          </li>
+        </ul>
+        <p style="font-size:10px; text-align:right;">Source: Wikipedia</p>
+    </div>
+    </div>
+    <div id="signature">
+      <a href="http://www.rrrita.com/">Designed by Rita Morais</a>
     </div>
 
 

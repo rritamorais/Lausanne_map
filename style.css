@@ -12,15 +12,14 @@ html, body, #map-canvas {
 }
 #nav {
   position: absolute;
+  max-height: 83%;
   padding-top: 90px;
   background-color: rgba(256, 256, 256, 0.2);;
   top: 30px;
   left: 20px;
-  max-height: 600px;
 }
 #info {
   background-color: white;
-  max-height: 300px;
   margin-left: 20px;
   width: 360px;
   margin-bottom: 20px;
@@ -43,7 +42,7 @@ html, body, #map-canvas {
   color: #1bba9a;
 }
 #header-fixed h2 {
-  padding-top: -20px;
+  margin-top: 15px;
   text-align: center;
   font-size: 30px;
 }
@@ -75,6 +74,7 @@ html, body, #map-canvas {
   background-color: blue;
 }
 
+/* ---------- SEARCH ---------- from: http://codepen.io/m412c0/pen/eDJui */
 fieldset {
   border: 0;
   margin: 0;
@@ -120,7 +120,6 @@ input[type="search"]::-webkit-search-decoration {
   top: 85px;
 }
 
-/* ---------- SEARCH ---------- */
 
 #search {
   background: #42454e;

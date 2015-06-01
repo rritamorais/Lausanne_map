@@ -15,7 +15,7 @@
       <div id="search">
         <form action="javascript:void(0);" method="GET">
           <fieldset class="clearfix">
-            <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="search" name="search" value="What are you looking for?" onBlur="if(this.value=='')this.value='What are you looking for?'" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
+            <input data-bind="value: filter || 'bananas', valueUpdate: 'afterkeydown'" type="search" name="search" value="What are you looking for?" onFocus="if(this.value=='What are you looking for?')this.value='' "> 
             <input type="submit" value="Search" class="button">
           </fieldset>
         </form>
@@ -31,13 +31,17 @@
   
       <div id="info" data-bind="with: currentLocation">
         <h3 data-bind="text: name"></h3>
+        <ul id="four" data-bind="foreach: fourImgs">
+          <img data-bind="attr: {src: $data}">
+        </ul>
         <p data-bind="text: description"></p>
         <h4>Want more information?</h4>
       <ul id="wiki" data-bind="foreach: wikiLinks">
         <li>
-        <a data-bind="attr: { href: $data, title: $data}, text: $data"></a>
-      </li>
+          <a data-bind="attr: { href: 'http://en.wikipedia.org/wiki/' + $data, title: $data}, text: $data"></a>
+        </li>
       </ul>
+      <p style="font-size:10px; text-align:right;">Source: Wikipedia</p>
     </div>
     </div>
 

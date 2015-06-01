@@ -114,10 +114,9 @@ input[type="search"]::-webkit-search-decoration {
 .container {
   z-index: 1;
   height: 44px;
-  left: 50%;
-  margin: -22px 0 0 -141px;
+  left: 20px;
   position: absolute;
-  top: 85px;
+  top: 65px;
 }
 
 
@@ -141,7 +140,7 @@ input[type="search"]::-webkit-search-decoration {
 #search input[type="search"] {
   background: #fff;
   color: #42454e;
-  min-width: 184px;
+  min-width: 260px;
   padding: 6px 8px;
 }
 

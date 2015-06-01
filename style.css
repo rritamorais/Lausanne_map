@@ -46,6 +46,7 @@ html, body, #map-canvas {
   text-decoration: none;
   font-size: 13px;
   margin-right: 20px;
+  margin-bottom: 20px;
 }
 ::-webkit-scrollbar { 
     display: none; 

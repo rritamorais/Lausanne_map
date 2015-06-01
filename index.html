@@ -32,7 +32,7 @@
       <div id="info" data-bind="with: currentLocation">
         <h3 data-bind="text: name"></h3> 
         <a id="directions" data-bind="attr: { href: 'https://maps.google.com?daddr=' + $data.lat + ',' + $data.lng}">Get directions</a>
-        <ul id="four" data-bind="foreach: fourImgs">
+        <ul id="foursquare" data-bind="foreach: fourImgs">
           <img data-bind="attr: {src: $data}">
         </ul>
         <p data-bind="text: description"></p>

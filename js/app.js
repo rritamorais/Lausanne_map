@@ -1,7 +1,4 @@
 //MODEL
-var $wikiElem = $('#wiki');
-var $fourElem = $('#four');
-
 var initialLocations = [
   {
       name : "Collection de l'art brut",
@@ -35,8 +32,8 @@ var initialLocations = [
   },
   {
       name : 'Le Flon',
-      lat : 46.5140495,
-      lng : 6.623333,
+      lat : 46.521105,
+      lng : 6.626607,
       tags: ["shopping", "bars", "clothes"]
   },
   {
@@ -83,7 +80,7 @@ var ViewModel = function() {
     this.lat = data.lat;
     this.lng = data.lng;
     this.tags = data.tags;
-    this.description = ko.observableArray([]);;
+    this.description = ko.observable('');
     this.wikiLinks = ko.observableArray([]);
     this.fourImgs = ko.observableArray([]);
     this.marker = new google.maps.Marker();
@@ -106,7 +103,7 @@ var ViewModel = function() {
     loadWiki();
     loadFoursquare();
     //gives time for ajax request to finish before scrolling down the heigh of the div
-    setTimeout(scrollDown, 800);
+    setTimeout(scrollDown, 900);
   };
 
   //Scrolls nav down to info div
@@ -119,7 +116,6 @@ var ViewModel = function() {
   ViewModel.filteredItems = ko.computed(function() {
       var filter = self.filter().toLowerCase();
       if (!filter) {
-        
         setMarkers(self.locationList());
         return self.locationList();
 
@@ -149,10 +145,10 @@ var ViewModel = function() {
     return false;
   };
 
-  //creates map
+  //MAP
   var map = initialize();
   var markerList = [];
-
+  //creates map
   function initialize() {
     var mapOptions = {
       center: new google.maps.LatLng(46.5240491, 6.613334),
@@ -163,7 +159,7 @@ var ViewModel = function() {
     return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     };
 
-    //creates markers
+  //creates markers
   function createMarkers() {
     ko.utils.arrayForEach(ViewModel.filteredItems(), function(locItem){
       var myLatlng = new google.maps.LatLng(locItem.lat,locItem.lng);
@@ -184,8 +180,8 @@ var ViewModel = function() {
         return function() {
           self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
           loadWiki();
+          loadFoursquare();
           scrollDown();
-
           self.toggleBounce(markerCopy);
         };
       })(marker));
@@ -221,13 +217,11 @@ var ViewModel = function() {
     }
   };
 
-//WIKI
-function loadWiki() {
-  $wikiElem.text("");
-
-  var selfLoc = self.currentLocation().name;
-
-  var wikiUrl = 'http://en.wikipedia.org/w/api.php?format=json&action=opensearch&search='+ selfLoc + '&callback=wikiCallback';
+  //WIKI AJAX
+  function loadWiki() {
+    var $wikiElem = $('#wikih4');
+    var selfLoc = self.currentLocation().name;
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?format=json&action=opensearch&search='+ selfLoc + '&callback=wikiCallback';
 
     var wikiRequestTimeout = setTimeout(function(){
       $wikiElem.text("Sorry, we couldn't find any wikipedia resources");
@@ -237,47 +231,41 @@ function loadWiki() {
     url: wikiUrl ,
     dataType: 'jsonp',
     success: function(response){
-      console.log(response);
-      if (response[1].length === 0) $( "#wikih4" ).text("No results found");
-      else $( "#wikih4" ).text("Want more information?");
+      //changes title if no wikipedia results are found
+      if (response[1].length === 0) $wikiElem.text("No results found");
+      else $wikiElem.text("Want more information?");
 
       var articleList = response[1];
-      var descriptionList = response[2];
-      var description = descriptionList[0];
+      var description = response[2][0];
 
       self.currentLocation().wikiLinks([]);
-      self.currentLocation().description([]);
-      self.currentLocation().description.push(description);
 
-
+      self.currentLocation().description(description);
 
       $.each(articleList, function(i) {
-      var articleTitle = articleList[i];
-      self.currentLocation().wikiLinks.push(articleTitle);
-
+        var articleTitle = articleList[i];
+        self.currentLocation().wikiLinks.push(articleTitle);
       });
 
       clearTimeout(wikiRequestTimeout);
     }     
-} );
-    return false;
-  };
+  } );
+      return false;
+    };
   
-
-  //FOURSQUARE
+  //FOURSQUARE AJAX
   function loadFoursquare() {
     var Latlng = self.currentLocation().lat+','+self.currentLocation().lng;
-    $fourElem.text("");
-
     var selfLoc = self.currentLocation().name;
 
     var fourUrl = 'https://api.foursquare.com/v2/venues/search?ll='+Latlng+'&client_id=IL5PRAKZOFDNHJSIYQP0RIMSWWWTEJQVBPVWW3FXK4A42WIX&client_secret=EG3NSCRU3BVVWZN0MLK0MUFCJOV02MUSOTSY0ETZ4DITJ5H2&v=20150106';
 
-      var fourRequestTimeout = setTimeout(function(){
-        $fourElem.text("Sorry, we couldn't find any fourthsquare resources");
-      }, 4000);
+    var fourRequestTimeout = setTimeout(function(){
+      $('#foursquare').text("Sorry, we couldn't find any foursquare resources");
+    }, 4000);
 
-      $.ajax( {
+    //first ajax gets venue id
+    $.ajax( {
       url: fourUrl ,
       dataType: 'jsonp',
       success: function(response){
@@ -287,35 +275,31 @@ function loadWiki() {
 
         clearTimeout(fourRequestTimeout);
 
+        //second ajax gets photo link with venue id
         $.ajax( {
-        url: photoUrl ,
-        dataType: 'jsonp',
-        success: function(response){
-          var fourimgUrl = response.response.venue.bestPhoto.prefix + '420x200' + response.response.venue.bestPhoto.suffix;
-          //clears array
-          self.currentLocation().fourImgs([]);
-          //pushes results into array
-          self.currentLocation().fourImgs.push(fourimgUrl);
-        
-        clearTimeout(fourRequestTimeout);
-        }     
-        } );
+          url: photoUrl ,
+          dataType: 'jsonp',
+          success: function(response){
+            var fourimgUrl = response.response.venue.bestPhoto.prefix + '420x200' + response.response.venue.bestPhoto.suffix;
+            //clears array
+            self.currentLocation().fourImgs([]);
+            //pushes results into array
+            self.currentLocation().fourImgs.push(fourimgUrl);
+          
+          clearTimeout(fourRequestTimeout);
+          }     
+        });
       }     
-      } );
-      return false;
-
+    });
+    return false;
   }; 
-
-
-};//end of ViewModel
-
-var stringStartsWith = function (string, startsWith) {          
+  //adds missing functionality for knockout filter
+  function stringStartsWith(string, startsWith) {          
         string = string || "";
         if (startsWith.length > string.length)
             return false;
         return string.substring(0, startsWith.length) === startsWith;
-    };
-
-
+  };
+};//end of ViewModel
 
 ko.applyBindings(new ViewModel());

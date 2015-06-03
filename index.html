@@ -31,7 +31,7 @@
   
       <div id="info" data-bind="with: currentLocation">
         <h3 data-bind="text: name"></h3> 
-        <a id="directions" data-bind="attr: { href: 'https://maps.google.com?daddr=' + $data.lat + ',' + $data.lng}">Get directions</a>
+        <a id="directions" data-bind="attr: { href: 'https://maps.google.com?daddr=' + $data.lat + ',' + $data.lng}" target="_blank">Get directions</a>
         <ul id="foursquare" data-bind="foreach: fourImgs">
           <img data-bind="attr: {src: $data}">
         </ul>
@@ -39,14 +39,14 @@
         <h4 id="wikih4">Want more information?</h4>
         <ul id="wiki" data-bind="foreach: wikiLinks">
           <li>
-            <a data-bind="attr: { href: 'http://en.wikipedia.org/wiki/' + $data, title: $data}, text: $data"></a>
+            <a data-bind="attr: { href: 'http://en.wikipedia.org/wiki/' + $data, title: $data}, text: $data" target="_blank"></a>
           </li>
         </ul>
         <p style="font-size:10px; text-align:right;">Source: Wikipedia</p>
     </div>
     </div>
     <div id="signature">
-      <a href="http://www.rrrita.com/">Designed by Rita Morais</a>
+      <a href="http://www.rrrita.com/" target="_blank">Designed by Rita Morais</a>
     </div>
 
 

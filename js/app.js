@@ -181,7 +181,7 @@ var ViewModel = function() {
           self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
           loadWiki();
           loadFoursquare();
-          scrollDown();
+          setTimeout(scrollDown, 900);
           self.toggleBounce(markerCopy);
         };
       })(marker));

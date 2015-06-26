@@ -102,15 +102,8 @@ var ViewModel = function() {
     loadWiki();
     loadFoursquare();
     map.panTo(clickedLoc);
-    //gives time for ajax request to finish before scrolling down the heigh of the div
-    setTimeout(scrollDown, 900);
+    map.panBy(0, -150);
   };
-
-  //Scrolls nav down to info div
-  function scrollDown() {
-    var infoDiv = document.getElementById("nav");
-    infoDiv.scrollTop = infoDiv.scrollHeight;
-  }
 
   //FILTER
   ViewModel.filteredItems = ko.computed(function() {
@@ -187,7 +180,7 @@ var ViewModel = function() {
           loadWiki();
           loadFoursquare();
           map.panTo(markerCopy.getPosition());
-          setTimeout(scrollDown, 900);
+          map.panBy(0, -150);
           self.toggleBounce(markerCopy);
         };
       })(marker));

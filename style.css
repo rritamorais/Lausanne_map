@@ -9,12 +9,12 @@ body,
 
 #nav, 
 .info {
-  overflow: auto;
 	z-index: 1;
 	width: 500px;
 }
 
 #nav {
+  overflow: auto;
   position: absolute;
   max-height: 83%;
   padding-top: 90px;
@@ -248,4 +248,134 @@ input[type="search"]::-webkit-search-decoration {
 
 #search input[type="search"]:-ms-input-placeholder { 
   color: #42454e;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  .foursquare {
+    display: none;
+  }
+
+  #nav, 
+  .info {
+    width: 90%;
+  }
+
+  #nav {
+    font-size: 12px;
+    max-height: 50%;
+    padding-top: 50px;
+    top: 10px;
+    left: 5%;
+  }
+
+  .info {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  .header-fixed {
+    background: white url(img/header_mobile.png) no-repeat;
+    top: 10px;
+    left: 5%;
+    background-size: 100%;
+    padding-left: 0;
+    width: 90%;
+    height: 9%;
+    border-radius: 5px 5px 0 0;
+  }
+  #nav h2 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 55px;
+    padding: 5px 0px 5px 15px;
+    width: 205px;
+    border-radius: 0;
+  }
+
+  .info {
+    background-color: white;
+    margin-left: 10px;
+    width: 95%;
+    margin-bottom: 5px;
+  }
+
+  .info p, 
+  h4, 
+  ul {
+    padding: 0 10px;
+  }
+
+  .info h3 {
+    padding: 0 10px;
+    width: 95%;
+    float: left;
+  }
+
+  .directions {
+    text-align: center;
+    margin-top: 0;
+    border-radius: 3px;
+    float: left;
+    width: 90px;
+    font-size: 10px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+  }
+
+  .signature {
+    border-radius: 1px;
+    padding: 5px;
+    left: 65%;
+    top: 95%;
+  }
+
+  .signature a {
+    font-size: 8px;
+  }
+
+  .wiki li {
+    margin-top: 0;
+    padding: 5px 10px;
+  }
+
+  .list {
+    padding-left: 10px;
+  }
+
+  .list li {
+    padding: 10px 10px;
+    margin-top: 5px;
+  }
+
+  /* ---------- SEARCH ---------- from: http://codepen.io/m412c0/pen/eDJui */
+  input {
+    line-height: 1.1em;
+  }
+
+  .container {
+    height: 14px;
+    left: 55px;
+    top: 30px;
+  }
+
+  #search {
+    border-radius: 2px;
+    padding: 5px;
+  }
+
+  #search input[type="search"],
+  #search input[type="submit"] {
+    border-radius: 2px;
+  }
+
+  #search input[type="search"] {
+    min-width: 200px;
+    padding: 4px 6px;
+  }
+
+  #search input[type="submit"] {
+    margin-left: 5px;
+    padding: 4px 6px;
+  }
 }

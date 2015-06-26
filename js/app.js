@@ -86,14 +86,14 @@ var ViewModel = function() {
   };
 
   //list of locations
-  this.locationList = ko.observableArray([]);
+  self.locationList = ko.observableArray([]);
 
   initialLocations.forEach(function(locItem){
     self.locationList.push( new Location(locItem));
   });
 
   //initialize the currentLocation to none so nothing is displayed
-  this.currentLocation = ko.observable(this.locationList()[null]);
+  self.currentLocation = ko.observable(this.locationList()[null]);
 
   //Selects locations on click (list)
   this.changeLoc = function(clickedLoc){

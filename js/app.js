@@ -108,10 +108,10 @@ var ViewModel = function() {
   };
 
   //Scrolls nav down to info div
-  function scrollDown() {
-    var infoDiv = document.getElementById("nav");
-    infoDiv.scrollTop = infoDiv.scrollHeight;
-  }
+  // function scrollDown() {
+  //   var infoDiv = document.getElementById("nav");
+  //   infoDiv.scrollTop = infoDiv.scrollHeight;
+  // }
 
   //FILTER
   ViewModel.filteredItems = ko.computed(function() {

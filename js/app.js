@@ -187,6 +187,7 @@ var ViewModel = function() {
           loadWiki();
           loadFoursquare();
           map.panTo(markerCopy.getPosition());
+          map.panBy(0, -100);
           setTimeout(scrollDown, 900);
           self.toggleBounce(markerCopy);
         };

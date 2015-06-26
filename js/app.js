@@ -67,14 +67,13 @@ var initialLocations = [
       lng: 6.638557,
       tags: ["architecture", "lybrary", "culture"]
   }
-]
-
+];
 
 var ViewModel = function() {
   var self = this;
-  this.filter = ko.observable('');
+  self.filter = ko.observable('');
 
-  //variable 
+  //variable
   var Location = function(data) {
     this.name = data.name;
     this.lat = data.lat;
@@ -84,8 +83,7 @@ var ViewModel = function() {
     this.wikiLinks = ko.observableArray([]);
     this.fourImgs = ko.observableArray([]);
     this.marker = new google.maps.Marker();
-
-  }
+  };
 
   //list of locations
   this.locationList = ko.observableArray([]);
@@ -99,9 +97,11 @@ var ViewModel = function() {
 
   //Selects locations on click (list)
   this.changeLoc = function(clickedLoc){
+    $("#col-list").trigger("close");
     self.currentLocation(clickedLoc);
     loadWiki();
     loadFoursquare();
+    map.panTo(clickedLoc);
     //gives time for ajax request to finish before scrolling down the heigh of the div
     setTimeout(scrollDown, 900);
   };
@@ -114,36 +114,40 @@ var ViewModel = function() {
 
   //FILTER
   ViewModel.filteredItems = ko.computed(function() {
-      var filter = self.filter().toLowerCase();
-      if (!filter) {
-        setMarkers(self.locationList());
-        return self.locationList();
+    //Uncollapses list to show search results
+    $("#col-list").trigger("open");
 
-      } else {
-          //hides any info windows while searching
-          self.currentLocation(null);
-          //clears map
-          clearMarkers();
-          //creates temporary variable 
-          var innerList = ko.utils.arrayFilter(self.locationList(), function(item) {
-            return (stringStartsWith(item.name.toLowerCase(), filter) || filterTags(item.tags, filter))
-          });
-          //uses temporary variable to set markers on the map while filtering
-          setMarkers(innerList);
-          return innerList;
-      }
+    var filter = self.filter().toLowerCase();
+    if (!filter) {
+      setMarkers(self.locationList());
+      return self.locationList();
+
+    } else {
+        //hides any info windows while searching
+        self.currentLocation(null);
+        //clears map
+        clearMarkers();
+        //creates temporary variable 
+        var innerList = ko.utils.arrayFilter(self.locationList(), function(item) {
+          return (stringStartsWith(item.name.toLowerCase(), filter) || filterTags(item.tags, filter));
+        });
+        //uses temporary variable to set markers on the map while filtering
+        setMarkers(innerList);
+        return innerList;
+    }
   }, ViewModel);
 
   //filters tags
   function filterTags(tagList, tagFilter) {
-    for (i=0; i < tagList.length; i++) {
+    var tagLength = tagList.length;
+    for (i=0; i < tagLength; i++) {
       //no need to address the (!filter) as it is only used inside the main filter function
       if (stringStartsWith(tagList[i].toLowerCase(), tagFilter)) {
         return true;
       }
     }
     return false;
-  };
+  }
 
   //MAP
   var map = initialize();
@@ -152,12 +156,12 @@ var ViewModel = function() {
   function initialize() {
     var mapOptions = {
       center: new google.maps.LatLng(46.5240491, 6.613334),
-      zoom: 14,
+      zoom: 15,
       mapTypeId: google.maps.MapTypeId.SATELLITE,
       disableDefaultUI: true
     };
     return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    };
+    }
 
   //creates markers
   function createMarkers() {
@@ -178,15 +182,17 @@ var ViewModel = function() {
 
       google.maps.event.addListener(marker, 'click', (function(markerCopy) {
         return function() {
+          $("#col-list").trigger("close");
           self.currentLocation(self.locationList()[markerList.indexOf(markerCopy)]);
           loadWiki();
           loadFoursquare();
+          map.panTo(markerCopy.getPosition());
           setTimeout(scrollDown, 900);
           self.toggleBounce(markerCopy);
         };
       })(marker));
     });  
-  };
+  }
   createMarkers();
 
   //sets the markers on map - receives filtered list as it is filtered
@@ -194,14 +200,14 @@ var ViewModel = function() {
     listLoc.forEach(function(item) { 
       item.marker.setMap(map);
     });
-  };
+  }
 
   //clears markers from map
   function clearMarkers() {
     markerList.forEach(function(item) { 
       item.setMap(null);
     });
-  };
+  }
 
   //toggles bounce animation for markers
   this.toggleBounce = function(clickMarker) {
@@ -210,7 +216,7 @@ var ViewModel = function() {
       item.setAnimation(null);        
     });
 
-    if (clickMarker.getAnimation() != null) {
+    if (clickMarker.getAnimation() !== null) {
       clickMarker.setAnimation(null);
     } else {
       clickMarker.setAnimation(google.maps.Animation.BOUNCE);
@@ -228,30 +234,30 @@ var ViewModel = function() {
     }, 4000);
 
     $.ajax( {
-    url: wikiUrl ,
-    dataType: 'jsonp',
-    success: function(response){
-      //changes title if no wikipedia results are found
-      if (response[1].length === 0) $wikiElem.text("No results found");
-      else $wikiElem.text("Want more information?");
+      url: wikiUrl ,
+      dataType: 'jsonp',
+      success: function(response){
+        //changes title if no wikipedia results are found
+        if (response[1].length === 0) $wikiElem.text("No results found");
+        else $wikiElem.text("Want more information?");
 
-      var articleList = response[1];
-      var description = response[2][0];
+        var articleList = response[1];
+        var description = response[2][0];
 
-      self.currentLocation().wikiLinks([]);
+        self.currentLocation().wikiLinks([]);
 
-      self.currentLocation().description(description);
+        self.currentLocation().description(description);
 
-      $.each(articleList, function(i) {
-        var articleTitle = articleList[i];
-        self.currentLocation().wikiLinks.push(articleTitle);
-      });
+        $.each(articleList, function(i) {
+          var articleTitle = articleList[i];
+          self.currentLocation().wikiLinks.push(articleTitle);
+        });
 
-      clearTimeout(wikiRequestTimeout);
-    }     
-  } );
+        clearTimeout(wikiRequestTimeout);
+      }     
+    } );
       return false;
-    };
+  }
   
   //FOURSQUARE AJAX
   function loadFoursquare() {
@@ -269,7 +275,6 @@ var ViewModel = function() {
       url: fourUrl ,
       dataType: 'jsonp',
       success: function(response){
-        console.log(response);
         var venueId = response.response.venues[0].id;
         var photoUrl = 'https://api.foursquare.com/v2/venues/'+ venueId + '?oauth_token=D4PTDXIIRZ32ZDZEVRMPOAEQZEX1QSLWDFJKQ0Q4FDG42LPF&v=20150601';
 
@@ -292,14 +297,14 @@ var ViewModel = function() {
       }     
     });
     return false;
-  }; 
+  }
   //adds missing functionality for knockout filter
   function stringStartsWith(string, startsWith) {          
-        string = string || "";
-        if (startsWith.length > string.length)
-            return false;
-        return string.substring(0, startsWith.length) === startsWith;
-  };
+    string = string || "";
+    if (startsWith.length > string.length)
+        return false;
+    return string.substring(0, startsWith.length) === startsWith;
+  }
 };//end of ViewModel
 
 ko.applyBindings(new ViewModel());

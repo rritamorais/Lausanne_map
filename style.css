@@ -9,12 +9,12 @@ body,
 
 #nav, 
 .info {
-  overflow: auto;
 	z-index: 1;
 	width: 500px;
 }
 
 #nav {
+  overflow: auto;
   position: absolute;
   max-height: 83%;
   padding-top: 90px;
@@ -271,7 +271,7 @@ input[type="search"]::-webkit-search-decoration {
 
   .info {
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
   }
   .header-fixed {
     background: white url(img/header_mobile.png) no-repeat;

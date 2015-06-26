@@ -269,7 +269,7 @@ input[type="search"]::-webkit-search-decoration {
     left: 5%;
   }
 
-  .info {
+  .info, #nav {
     overflow-x: hidden;
     overflow-y: scroll;
   }

@@ -269,9 +269,9 @@ input[type="search"]::-webkit-search-decoration {
     left: 5%;
   }
 
-  .info, #nav {
+  .info {
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .header-fixed {
     background: white url(img/header_mobile.png) no-repeat;

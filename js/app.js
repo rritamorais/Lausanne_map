@@ -102,6 +102,7 @@ var ViewModel = function() {
     loadWiki();
     loadFoursquare();
     map.panTo(clickedLoc);
+    map.panBy(0, -150);
     //gives time for ajax request to finish before scrolling down the heigh of the div
     setTimeout(scrollDown, 900);
   };
@@ -187,7 +188,7 @@ var ViewModel = function() {
           loadWiki();
           loadFoursquare();
           map.panTo(markerCopy.getPosition());
-          map.panBy(0, -100);
+          map.panBy(0, -150);
           setTimeout(scrollDown, 900);
           self.toggleBounce(markerCopy);
         };
